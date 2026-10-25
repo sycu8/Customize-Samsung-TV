@@ -41,6 +41,8 @@
     launchedAppId: "",
     launchAt: 0,
     lastResume: 0,
+    sawLaunchedApp: false,
+    missingCount: 0,
   };
 
   function $(id) {
@@ -211,6 +213,8 @@
   function clearLaunched() {
     state.launchedOther = false;
     state.launchedAppId = "";
+    state.sawLaunchedApp = false;
+    state.missingCount = 0;
   }
 
   function resumeSelf() {
@@ -225,14 +229,30 @@
     }
     state.lastResume = Date.now();
     try {
-      tizen.application.launch(SELF_ID);
+      tizen.application.launch(
+        SELF_ID,
+        function () {},
+        function () {
+          try {
+            tizen.application.launchAppControl(
+              new tizen.ApplicationControl("http://tizen.org/appcontrol/operation/view"),
+              SELF_ID,
+              null,
+              null,
+              null
+            );
+          } catch (e2) {
+            /* ignore */
+          }
+        }
+      );
     } catch (e) {
       /* ignore */
     }
   }
 
   function onLaunchedAppClosed() {
-    /* Samsung often fires reply when opening clips — do NOT steal focus here. */
+    /* Samsung fires this when a clip starts. Never reclaim from this callback. */
   }
 
   function launchById(appId, name) {
@@ -613,21 +633,75 @@
     return "";
   }
 
-  function shouldStayInBackground(contexts) {
-    var fgId = foregroundAppId(contexts || []);
-    /* Always yield to any content app we launched (YouTube, Netflix, …). */
-    if (state.launchedOther) {
-      if (fgId && isHomeApp(fgId)) {
+  function contextHasApp(contexts, id) {
+    var i;
+    if (!id) {
+      return false;
+    }
+    for (i = 0; i < contexts.length; i += 1) {
+      if ((contexts[i].appId || "") === id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function launchedAppAlive() {
+    var ctx;
+    var name;
+    var msg;
+    if (!state.launchedAppId || typeof tizen === "undefined" || !tizen.application || !tizen.application.getAppContext) {
+      return null;
+    }
+    try {
+      ctx = tizen.application.getAppContext(state.launchedAppId);
+      return ctx ? true : false;
+    } catch (e) {
+      name = (e && e.name) || "";
+      msg = (e && e.message) || "";
+      if (/NotFound/i.test(name) || /not found|cannot be found/i.test(msg)) {
         return false;
       }
-      if (fgId && fgId === SELF_ID) {
+      return null;
+    }
+  }
+
+  function launchedAppPresent(contexts) {
+    var alive = launchedAppAlive();
+    if (contextHasApp(contexts, state.launchedAppId) || alive === true) {
+      return true;
+    }
+    if (alive === false && !contextHasApp(contexts, state.launchedAppId)) {
+      return false;
+    }
+    return contextHasApp(contexts, state.launchedAppId);
+  }
+
+  function shouldStayInBackground(contexts) {
+    var list = contexts || [];
+    var fgId = foregroundAppId(list);
+    var age = Date.now() - state.launchAt;
+    var present = state.launchedAppId ? launchedAppPresent(list) : false;
+    if (present) {
+      state.sawLaunchedApp = true;
+      state.missingCount = 0;
+    }
+    if (fgId && fgId !== SELF_ID && !isHomeApp(fgId)) {
+      return true;
+    }
+    if (state.launchedOther && age < 8000) {
+      return true;
+    }
+    if (fgId && (isHomeApp(fgId) || fgId === SELF_ID)) {
+      return false;
+    }
+    /* Seen YouTube/Netflix running, then it left the app list: user exited. */
+    if (state.launchedOther && state.sawLaunchedApp && state.launchedAppId && !present) {
+      state.missingCount += 1;
+      if (state.missingCount >= 2) {
         return false;
       }
       return true;
-    }
-    /* Hidden without our launch: only reclaim Smart Hub, never steal unknown apps. */
-    if (fgId && isHomeApp(fgId)) {
-      return false;
     }
     return true;
   }

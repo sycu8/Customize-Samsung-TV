@@ -26,6 +26,7 @@ When onboarding a **non-technical owner**, send them `docs/HUONG-DAN-NGUOI-DUNG.
 - Never use Android ADB on Tizen TVs.
 - Never claim the custom app fully replaces the Home button / Smart Hub.
 - Never commit or print cert passwords / private keys.
+- Never commit the calendar link. Put it only in gitignored `js/calendar.local.js`.
 - Never claim TV visual success without install/launch verification (screenshot often unsupported).
 
 ## Workflow (follow in order)
@@ -83,7 +84,7 @@ Ask follow-ups until answers are concrete (app names, IP like `192.168.x.x`, cal
 | --- | --- |
 | Dock apps (5) | `js/app.js` `DOCK` + logos in `images/` |
 | Weather location | `js/weather.js` `LAT`/`LON`/`PLACE` |
-| Calendar ICS | `js/calendar.js` `CAL_URL` + CSP `connect-src` in `index.html` |
+| Calendar ICS | gitignored `js/calendar.local.js` (`ATH_CALENDAR_URL`) + host in CSP `connect-src` |
 | Wallpaper set | `images/wallpapers/wp0N.jpg` + `js/wallpaper.js` |
 | Theme sizes | `css/app.css` |
 | Default reclaim | already in app; owner must set TV Autorun (step 6) |

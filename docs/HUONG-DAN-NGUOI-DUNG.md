@@ -109,6 +109,8 @@ Home có thể hiện **sự kiện 7 ngày tới** từ lịch public. TV **kh�
 
 ⚠️ Ai có link cũng xem được tên sự kiện trên lịch đó. Đừng public lịch riêng tư/nhạy cảm.
 
+Người kỹ thuật lưu link trong file riêng trên máy họ (`calendar.local.js`). File này không được đưa lên GitHub.
+
 ## D2. Google Calendar
 
 1. Máy tính → [calendar.google.com](https://calendar.google.com) → bánh răng **Settings**.

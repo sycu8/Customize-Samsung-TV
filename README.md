@@ -77,7 +77,7 @@ Chi tiết: `.cursor/skills/samsung-appletv-home/reference.md`
 | --- | --- |
 | 5 app dock | `js/app.js` → `DOCK` + `images/` |
 | Thời tiết / vị trí | `js/weather.js` |
-| Lịch ICS | `js/calendar.js` + CSP trong `index.html` |
+| Lịch ICS | `js/calendar.local.js` (không commit) + host trong CSP `index.html` |
 | Wallpaper | `images/wallpapers/` + `js/wallpaper.js` |
 | Giao diện | `css/app.css` |
 
@@ -97,9 +97,9 @@ Chi tiết: `.cursor/skills/samsung-appletv-home/reference.md`
 
 ## An toàn
 
-- Không commit mật khẩu / `.p12` / `.pwd`  
+- Không commit mật khẩu / `.p12` / `.pwd` / `js/calendar.local.js`  
 - Không root TV  
-- Lịch public = ai có link cũng xem được sự kiện  
+- Lịch public = ai có link cũng xem được sự kiện. Link nằm trên máy cài TV, không đưa lên GitHub  
 
 ---
 

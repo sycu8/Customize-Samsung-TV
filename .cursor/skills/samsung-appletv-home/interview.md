@@ -45,7 +45,7 @@ Giải thích ngắn: TV đọc **lịch public ICS** (webcal/https), không đ�
 1. Mở Lịch → chọn lịch (ví dụ “Nhà”)
 2. Chia sẻ lịch / **Public Calendar** / Đăng lịch công khai
 3. Copy link dạng `webcal://…icloud.com/published/…` hoặc `https://…`
-4. Dán cho agent
+4. Dán cho agent. Agent ghi vào `js/calendar.local.js` (file gitignore). Không commit, không dán lại full link lên GitHub hay chat.
 
 ### Google Calendar
 

@@ -1,13 +1,23 @@
 (function (global) {
   "use strict";
 
-  var CAL_URL =
-    "https://p134-caldav.icloud.com/published/2/MTcwMDA2NjI4NjE3MDAwNoU6H_rzVhTid__3_QeMhzanHBE_qhbu7br9orldTMoo";
+  var CAL_URL = normalizeCalendarUrl(global.ATH_CALENDAR_URL);
   var REFRESH_MS = 30 * 60 * 1000;
   var WEEKDAYS = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function normalizeCalendarUrl(value) {
+    var url = String(value || "").replace(/^\s+|\s+$/g, "");
+    if (url.indexOf("webcal://") === 0) {
+      url = "https://" + url.slice("webcal://".length);
+    }
+    if (url.indexOf("https://") !== 0) {
+      return "";
+    }
+    return url;
   }
 
   function unfold(ics) {
@@ -225,6 +235,10 @@
   function load() {
     var list = $("cal-list");
     if (!list) {
+      return;
+    }
+    if (!CAL_URL) {
+      list.innerHTML = '<div class="side-empty">Chưa cấu hình lịch</div>';
       return;
     }
     list.innerHTML = '<div class="side-empty">Đang tải lịch…</div>';

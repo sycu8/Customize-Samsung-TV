@@ -20,6 +20,7 @@ Thumbs.db
 .env.*
 .dev.vars
 **/appletvhome*.pwd
+js/calendar.local.js
 
 # Local SDK noise
 .sign/

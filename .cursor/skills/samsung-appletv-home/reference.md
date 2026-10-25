@@ -20,7 +20,7 @@
 | `index.html` | CSP `connect-src` (weather + calendar hosts) |
 | `js/app.js` | dock, launchpad, home reclaim |
 | `js/weather.js` | Open-Meteo location |
-| `js/calendar.js` | ICS / webcal URL |
+| `js/calendar.js` | ICS parser. URL comes from gitignored `js/calendar.local.js` |
 | `js/wallpaper.js` | rotate wallpapers |
 | `js/panels.js` | in-app Settings / Internet / ads audit |
 | `css/app.css` | layout |
@@ -69,8 +69,10 @@ Privileges typically: `application.launch`, `application.info`, `tv.inputdevice`
 
 ## Calendar URL
 
+- Owner link goes in `js/calendar.local.js` as `global.ATH_CALENDAR_URL` (see `js/calendar.local.example.js`)
+- That file is gitignored. Never commit the link
 - Accept `webcal://` → fetch as `https://`
-- Add host to CSP `connect-src`
+- Add the calendar host only (not the path token) to CSP `connect-src`
 - Parse ICS (fold lines, DATE vs date-time, TZID local)
 
 ## Weather
