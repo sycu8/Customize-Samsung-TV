@@ -1,0 +1,14 @@
+{
+  "name": "default",
+  "source": "CleanYourTV themes/default",
+  "dock_apps": ["netflix", "prime", "youtube", "hotstar"],
+  "columns": 4,
+  "rows_below_dock": 0,
+  "reduced_motion": false,
+  "background_color": "#000000",
+  "wallpaper": false,
+  "show_greeting": true,
+  "show_inputs_pill": true,
+  "show_network_pill": true,
+  "dock_title": true
+}

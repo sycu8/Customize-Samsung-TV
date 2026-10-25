@@ -1,0 +1,27 @@
+# Build outputs
+Debug/
+Release/
+*.wgt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.code-workspace
+
+# Secrets — never commit
+*.p12
+*.pwd
+*.pem
+*.key
+.env
+.env.*
+.dev.vars
+**/appletvhome*.pwd
+
+# Local SDK noise
+.sign/
+.tizen/
+verification/*.log

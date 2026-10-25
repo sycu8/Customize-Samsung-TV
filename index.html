@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data:; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://p134-caldav.icloud.com; img-src * 'self' file: data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+    <meta name="viewport" content="width=1920, height=1080, user-scalable=no" />
+    <title>Home</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div class="wallpaper" aria-hidden="true">
+      <div id="wallpaper-a" class="wallpaper-layer"></div>
+      <div id="wallpaper-b" class="wallpaper-layer"></div>
+      <div class="wallpaper-shade"></div>
+    </div>
+    <main class="home" id="home">
+      <header class="top">
+        <div class="time-block">
+          <p id="greeting" class="greeting">Chào buổi sáng</p>
+          <div class="clock-row">
+            <time id="clock" class="clock">--:--</time>
+            <span class="clock-rule" aria-hidden="true"></span>
+            <span id="date" class="date"></span>
+          </div>
+        </div>
+        <div id="weather-now" class="weather-now">
+          <p id="weather-place" class="weather-place">Quận 7, TP.HCM</p>
+          <p id="weather-temp" class="weather-temp">--°</p>
+          <p class="weather-meta">
+            <span id="weather-sky">Đang tải</span>
+            <span id="weather-humidity">Ẩm --%</span>
+            <span id="weather-dust">Bụi --</span>
+          </p>
+        </div>
+      </header>
+      <aside id="side-left" class="side side-left" aria-label="Thời tiết 6 giờ">
+        <p class="side-title">Sắp tới</p>
+        <div id="weather-hours" class="side-list"></div>
+      </aside>
+      <aside id="side-right" class="side side-right" aria-label="Thời tiết các ngày">
+        <p class="side-title">Các ngày</p>
+        <div id="weather-days" class="side-list"></div>
+      </aside>
+      <aside id="cal-panel" class="cal-panel" aria-label="Lịch">
+        <p class="side-title">Lịch</p>
+        <div id="cal-list" class="side-list cal-list"></div>
+      </aside>
+      <nav id="dock" class="dock" aria-label="Ứng dụng hay dùng"></nav>
+      <nav id="tray" class="tray" aria-label="Cài đặt TV"></nav>
+    </main>
+
+    <section id="airplay" class="airplay" hidden>
+      <p class="airplay-kicker">iPhone, iPad và Mac thấy TV này thế nào</p>
+      <h1 class="airplay-title">AirPlay Status</h1>
+      <div class="ap-rows">
+        <div class="ap-row">
+          <span class="ap-label">iPhone và Mac thấy TV này là</span>
+          <strong id="ap-name" class="ap-value">Đang kiểm tra</strong>
+        </div>
+        <div class="ap-row">
+          <span class="ap-label">Chiếu màn hình</span>
+          <strong id="ap-mirror" class="ap-value">Đang kiểm tra</strong>
+        </div>
+        <div class="ap-row">
+          <span class="ap-label">Máy AirPlay khác trên mạng</span>
+          <strong id="ap-others" class="ap-value">Đang kiểm tra</strong>
+        </div>
+      </div>
+      <div class="ap-actions">
+        <button type="button" class="ap-action" data-action="settings">
+          <span id="ap-server">Mở cài đặt AirPlay</span>
+        </button>
+        <button type="button" class="ap-action" data-action="refresh">Xem lại</button>
+      </div>
+    </section>
+    <section id="panel" class="panel" hidden>
+      <p id="panel-kicker" class="panel-kicker">Cấu hình</p>
+      <h1 id="panel-title" class="panel-title">Cài đặt</h1>
+      <div id="panel-rows" class="panel-rows"></div>
+      <div id="panel-actions" class="panel-actions"></div>
+    </section>
+    <section id="launchpad" class="launchpad" hidden>
+      <p class="launchpad-title">Ứng dụng</p>
+      <div id="launchpad-grid" class="launchpad-grid"></div>
+    </section>
+    <div id="toast" class="toast" hidden></div>
+    <script src="js/keys.js"></script>
+    <script src="js/wallpaper.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/airplay.js"></script>
+    <script src="js/panels.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

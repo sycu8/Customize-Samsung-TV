@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/AppleTvHome" version="0.8.13" viewmodes="maximized">
+   <name>AppleTvHome</name>
+   <icon src="icon.png"></icon>
+   <content src="index.html"></content>
+   <access origin="*" subdomains="true"></access>
+   <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"></feature>
+   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="enable" encryption="disable" install-location="auto" hwkey-event="enable"></tizen:setting>
+   <tizen:application id="uTr82d3TO7.AppleTvHome" package="uTr82d3TO7" required_version="2.3"></tizen:application>
+   <tizen:app-control>
+      <tizen:src name="index.html" reload="disable"/>
+      <tizen:operation name="http://samsung.com/appcontrol/operation/eden_resume"/>
+   </tizen:app-control>
+   <tizen:privilege name="http://tizen.org/privilege/application.launch"></tizen:privilege>
+   <tizen:privilege name="http://tizen.org/privilege/application.info"></tizen:privilege>
+   <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"></tizen:privilege>
+   <tizen:privilege name="http://tizen.org/privilege/internet"></tizen:privilege>
+   <tizen:privilege name="http://tizen.org/privilege/system"></tizen:privilege>
+   <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"></tizen:metadata>
+   <tizen:metadata key="http://samsung.com/tv/metadata/multitasking.support" value="true"></tizen:metadata>
+   <tizen:metadata key="http://tizen.org/metadata/app_ui_type/base_screen_resolution" value="extensive"></tizen:metadata>
+   <tizen:profile name="tv-samsung"></tizen:profile>
+</widget>
