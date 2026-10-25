@@ -213,44 +213,26 @@
     state.launchedAppId = "";
   }
 
-  function resumeSelf(force) {
+  function resumeSelf() {
     if (typeof tizen === "undefined" || !tizen.application) {
       return;
     }
-    if (!force && !document.hidden) {
+    if (!document.hidden) {
       return;
     }
-    if (Date.now() - state.lastResume < 700) {
+    if (Date.now() - state.lastResume < 1200) {
       return;
     }
     state.lastResume = Date.now();
     try {
       tizen.application.launch(SELF_ID);
     } catch (e) {
-      try {
-        tizen.application.launchAppControl(
-          new tizen.ApplicationControl("http://tizen.org/appcontrol/operation/view"),
-          SELF_ID,
-          null,
-          null,
-          null
-        );
-      } catch (e2) {
-        /* ignore */
-      }
+      /* ignore */
     }
   }
 
   function onLaunchedAppClosed() {
-    clearLaunched();
-    setTimeout(function () {
-      resumeSelf(true);
-    }, 200);
-    setTimeout(function () {
-      if (document.hidden) {
-        resumeSelf(true);
-      }
-    }, 1200);
+    /* Samsung often fires reply when opening clips — do NOT steal focus here. */
   }
 
   function launchById(appId, name) {
@@ -610,49 +592,44 @@
   }
 
   function isHomeApp(id) {
-    return /(smarthub|smart.?hub|tv\.home|homescreen|org\.tizen\.plus|samsung\.tv\.home|launcher|firstscreen|eden)/i.test(id || "");
-  }
-
-  function isContentApp(id) {
-    if (!id || id === SELF_ID || isHomeApp(id)) {
-      return false;
-    }
-    return true;
+    return /(smarthub|smart.?hub|tv\.home|homescreen|org\.tizen\.plus|samsung\.tv\.home|launcher|firstscreen)/i.test(
+      id || ""
+    );
   }
 
   function isForegroundContext(ctx) {
     return !!(ctx && (ctx.isForeground || ctx.foreground || ctx.isTop || ctx.state === "FOREGROUND"));
   }
 
-  function shouldStayInBackground(contexts) {
+  function foregroundAppId(contexts) {
     var i;
     var ctx;
-    var fgId = "";
-    var sawFlag = false;
-    if (state.launchedOther && Date.now() - state.launchAt < 1800) {
-      return true;
-    }
     for (i = 0; i < contexts.length; i += 1) {
       ctx = contexts[i];
       if (isForegroundContext(ctx)) {
-        sawFlag = true;
-        fgId = ctx.appId || "";
-        break;
+        return ctx.appId || "";
       }
     }
-    if (sawFlag) {
-      if (!fgId || fgId === SELF_ID || isHomeApp(fgId)) {
+    return "";
+  }
+
+  function shouldStayInBackground(contexts) {
+    var fgId = foregroundAppId(contexts || []);
+    /* Always yield to any content app we launched (YouTube, Netflix, …). */
+    if (state.launchedOther) {
+      if (fgId && isHomeApp(fgId)) {
         return false;
       }
-      if (state.launchedAppId && fgId === state.launchedAppId) {
-        return true;
+      if (fgId && fgId === SELF_ID) {
+        return false;
       }
-      return isContentApp(fgId);
+      return true;
     }
-    if (state.launchedOther && Date.now() - state.launchAt > 8000) {
+    /* Hidden without our launch: only reclaim Smart Hub, never steal unknown apps. */
+    if (fgId && isHomeApp(fgId)) {
       return false;
     }
-    return state.launchedOther;
+    return true;
   }
 
   function tickHome() {
@@ -666,17 +643,17 @@
       return;
     }
     if (!tizen.application.getAppsContext) {
-      resumeSelf(true);
       return;
     }
     tizen.application.getAppsContext(
       function (contexts) {
         if (!shouldStayInBackground(contexts || [])) {
-          resumeSelf(true);
+          clearLaunched();
+          resumeSelf();
         }
       },
       function () {
-        resumeSelf(true);
+        /* Never steal focus when context API fails (was kicking YouTube). */
       }
     );
   }
@@ -907,16 +884,9 @@
         tickClock();
         return;
       }
-      setTimeout(tickHome, 150);
-      setTimeout(tickHome, 800);
+      setTimeout(tickHome, 2000);
     });
-    window.addEventListener("pagehide", function () {
-      setTimeout(tickHome, 200);
-    });
-    window.addEventListener("blur", function () {
-      setTimeout(tickHome, 300);
-    });
-    setInterval(tickHome, 500);
+    setInterval(tickHome, 2500);
     bindPointer();
     if (window.HomePanels) {
       HomePanels.setTryLaunch(tryOpenNetworkSettings);
