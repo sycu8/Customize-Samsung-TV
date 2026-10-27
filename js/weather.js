@@ -11,8 +11,8 @@
     LAT +
     "&longitude=" +
     LON +
-    "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature" +
-    "&hourly=temperature_2m,weather_code" +
+    "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,is_day" +
+    "&hourly=temperature_2m,weather_code,is_day" +
     "&daily=weather_code,temperature_2m_max,temperature_2m_min" +
     "&forecast_days=7&timezone=Asia%2FHo_Chi_Minh";
   var AIR_URL =
@@ -26,7 +26,10 @@
     return document.getElementById(id);
   }
 
-  function conditionFor(code) {
+  function conditionFor(code, atNight) {
+    if (atNight && (code === 0 || code === 1)) {
+      return "Trời quang";
+    }
     if (code === 0) {
       return "Nắng";
     }
@@ -104,6 +107,32 @@
     return (h < 10 ? "0" : "") + h + "h";
   }
 
+  function vietnamDayKey(date) {
+    var formatted;
+    var shifted;
+    var y;
+    var m;
+    var d;
+    try {
+      formatted = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(formatted)) {
+        return formatted;
+      }
+    } catch (e) {
+      /* use a fixed Vietnam offset below */
+    }
+    shifted = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+    y = shifted.getUTCFullYear();
+    m = shifted.getUTCMonth() + 1;
+    d = shifted.getUTCDate();
+    return y + "-" + (m < 10 ? "0" : "") + m + "-" + (d < 10 ? "0" : "") + d;
+  }
+
   function nextHours(hourly) {
     var now = Date.now() - 30 * 60 * 1000;
     var out = [];
@@ -117,6 +146,7 @@
           time: hourly.time[i],
           temp: Math.round(hourly.temperature_2m[i]),
           code: hourly.weather_code[i],
+          atNight: hourly.is_day ? hourly.is_day[i] === 0 : false,
         });
       }
     }
@@ -127,13 +157,20 @@
     var out = [];
     var i;
     var date;
+    var todayKey = vietnamDayKey(new Date());
     if (!daily || !daily.time) {
       return out;
     }
-    for (i = 0; i < daily.time.length && out.length < 5; i += 1) {
+    for (i = 0; i < daily.time.length; i += 1) {
+      if (todayKey && daily.time[i] <= todayKey) {
+        continue;
+      }
+      if (out.length >= 5) {
+        break;
+      }
       date = new Date(daily.time[i] + "T12:00:00");
       out.push({
-        label: i === 0 ? "Hôm nay" : WEEKDAYS[date.getDay()],
+        label: WEEKDAYS[date.getDay()],
         date: date.getDate() + "/" + (date.getMonth() + 1),
         max: Math.round(daily.temperature_2m_max[i]),
         min: Math.round(daily.temperature_2m_min[i]),
@@ -151,7 +188,7 @@
     var dust = pm == null ? { text: "--", color: "#d0d0d0" } : dustLabel(pm);
     $("weather-place").textContent = PLACE;
     $("weather-temp").textContent = temp + "°";
-    $("weather-sky").textContent = conditionFor(current.weather_code);
+    $("weather-sky").textContent = conditionFor(current.weather_code, current.is_day === 0);
     $("weather-humidity").textContent = "Ẩm " + humidity + "%";
     $("weather-dust").textContent =
       "Bụi " + (pm == null ? "--" : Math.round(pm)) + " · " + dust.text;
@@ -174,7 +211,7 @@
       time.className = "wx-time";
       time.textContent = hourLabel(hour.time);
       temp.className = "wx-temp";
-      temp.textContent = hour.temp + "°  " + conditionFor(hour.code);
+      temp.textContent = hour.temp + "°  " + conditionFor(hour.code, hour.atNight);
       row.appendChild(time);
       row.appendChild(temp);
       list.appendChild(row);

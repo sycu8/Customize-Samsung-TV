@@ -2,7 +2,7 @@
   "use strict";
 
   var STORAGE_HOURS = "ath.showHours";
-  var APP_VERSION = "0.8.18";
+  var APP_VERSION = "0.8.19";
   var AD_RE =
     /(^|[.\-_ ])(ad|ads|advert|advertis|promo|promotion|recommend|samsungads|mdcl|acr|ambient|commerce|campaign|banner|sponsored|interest.?based|viewing.?info|smart.?hub|smarthub|home.?ad|tvplus|free.?ad)([.\-_ ]|$)/i;
   var kind = "";
