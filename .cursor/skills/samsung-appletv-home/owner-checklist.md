@@ -46,10 +46,10 @@ Làm lần lượt. Đánh dấu khi xong.
 Tên menu có thể hơi khác theo model:
 
 - [ ] Remote → Settings → **All Settings**
-- [ ] **General & Privacy** (Chung & quyền riêng tư)
+- [ ] Máy 2025: **Advanced Features** (Tính năng nâng cao). Máy 2023–2024: **General & Privacy**
 - [ ] **Start Screen Option** / Tùy chọn màn hình bắt đầu
 - [ ] **Tắt** “Start with Smart Hub Home” / Bắt đầu bằng Smart Hub
-- [ ] **Bật** “Autorun Last App” / Tự chạy ứng dụng gần nhất
+- [ ] **Bật** “Autorun Last App” / Tự chạy ứng dụng gần nhất, nếu máy có dòng này
 - [ ] Đang ở **AppleTvHome** → tắt TV bằng remote (không rút điện nếu có thể)
 
 Lần mở TV sau: TV sẽ cố mở lại app vừa dùng (Home này) nếu model hỗ trợ multitasking.

@@ -165,14 +165,15 @@ Samsung **không** cho app thường thay nút Home. Cách gần nhất:
 
 ## G1. Tắt tự mở Smart Hub — bật app gần nhất
 
-1. Remote → **Settings** → **All Settings** (Tất cả cài đặt).
-2. **General & Privacy** (Chung & quyền riêng tư).
-3. **Start Screen Option** / **Tùy chọn màn hình bắt đầu**  
-   (một số máy: **Smart Features** / Smart Screen Options).
-4. **Tắt** mục kiểu: **Start with Smart Hub Home** / Bắt đầu bằng Smart Hub.
-5. **Bật** mục kiểu: **Autorun Last App** / Tự chạy ứng dụng gần nhất.
+Máy 2025 (như UA55U8500):
 
-Tên menu có thể khác vài chữ theo năm máy — nếu không thấy, tìm trong Settings với từ khóa `Start`, `Smart Hub`, `Autorun`.
+1. Remote → **Settings** → **All Settings** (Tất cả cài đặt).
+2. **Advanced Features** (Tính năng nâng cao).
+3. **Start Screen Option** / **Tùy chọn màn hình bắt đầu**.
+4. **Tắt** **Start with Smart Hub Home** / Bắt đầu bằng Smart Hub.
+5. Nếu có **Autorun Last App** / Tự chạy ứng dụng gần nhất thì **bật**. Một số máy 2025 không có dòng này.
+
+Máy 2023–2024: cùng mục nằm ở **General & Privacy** (Chung & quyền riêng tư), không phải Tính năng nâng cao.
 
 ## G2. Thủ thuật quan trọng
 

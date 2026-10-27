@@ -2,7 +2,7 @@
   "use strict";
 
   var STORAGE_HOURS = "ath.showHours";
-  var APP_VERSION = "0.8.16";
+  var APP_VERSION = "0.8.18";
   var AD_RE =
     /(^|[.\-_ ])(ad|ads|advert|advertis|promo|promotion|recommend|samsungads|mdcl|acr|ambient|commerce|campaign|banner|sponsored|interest.?based|viewing.?info|smart.?hub|smarthub|home.?ad|tvplus|free.?ad)([.\-_ ]|$)/i;
   var kind = "";
@@ -275,7 +275,7 @@
       '<div class="panel-row"><span class="panel-label">Kiểm tra quảng cáo (app nhìn thấy)</span><strong class="panel-value">' +
       adsHtml +
       "</strong></div>" +
-      '<div class="panel-note">Home mặc định: app tự mở lại khi thoát app khác / khi Smart Hub hiện. Sau khi tắt mở TV: Settings → Chung & quyền riêng tư → Tùy chọn màn hình bắt đầu → tắt “Bắt đầu bằng Smart Hub”, bật “Tự chạy app gần nhất”, rồi để TV tắt khi đang ở Home này. Nút Home trên remote vẫn có thể mở Smart Hub (giới hạn Samsung).</div>';
+      '<div class="panel-note">Khi bật TV: Settings → Tất cả cài đặt → Tính năng nâng cao → Tùy chọn màn hình bắt đầu. Tắt “Bắt đầu bằng Smart Hub”. Nếu có “Tự chạy app gần nhất” thì bật. Đang mở Home này, tắt TV bằng nút nguồn trên remote (đừng rút điện), rồi bật lại. Nút Home trên remote vẫn có thể mở Smart Hub.</div>';
     actions = [
       { id: "toggle-hours", label: readHoursPref() ? "Tắt cột thời tiết & lịch" : "Bật cột thời tiết & lịch" },
       { id: "refresh-weather", label: "Làm mới thời tiết" },

@@ -703,6 +703,10 @@
       }
       return true;
     }
+    /* Power-on / Smart Hub covered us, and we are not inside YouTube or Netflix. */
+    if (!state.launchedOther) {
+      return false;
+    }
     return true;
   }
 
@@ -961,6 +965,7 @@
       setTimeout(tickHome, 2000);
     });
     setInterval(tickHome, 2500);
+    setTimeout(tickHome, 1500);
     bindPointer();
     if (window.HomePanels) {
       HomePanels.setTryLaunch(tryOpenNetworkSettings);
